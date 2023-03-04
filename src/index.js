@@ -2,12 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { AuthProvider } from "./context/auth_context";
+import { ArtistProvider } from "./context/artist_context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <ArtistProvider>
+        <App />
+      </ArtistProvider>
     </AuthProvider>
   </React.StrictMode>
 );

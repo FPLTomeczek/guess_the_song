@@ -1,0 +1,4 @@
+export const SET_ARTIST_NAME = "SET_ARTIST_NAME";
+export const SET_ARTIST_ALBUM = "SET_ARTIST_ALBUM";
+export const SET_ARTISTS = "SET_ARTISTS";
+export const SET_ALBUM_TRACKS = "SET_ALBUM_TRACKS";
