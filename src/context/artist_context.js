@@ -18,6 +18,8 @@ const initialState = {
   artist: {},
   artistAlbums: [],
   albumTracks: [],
+  answers: [],
+  indexOfTrack: 0,
 };
 
 export const ArtistProvider = ({ children }) => {

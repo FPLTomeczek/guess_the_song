@@ -13,10 +13,28 @@ const artistReducer = (state, action) => {
     return { ...state, artists: action.payload };
   }
   if (action.type === SET_ARTIST_ALBUM) {
-    return { ...state, artistAlbums: action.payload };
+    return {
+      ...state,
+      artistAlbums: action.payload,
+    };
   }
   if (action.type === SET_ALBUM_TRACKS) {
-    return { ...state, albumTracks: action.payload };
+    const data = action.payload;
+    const ind = Math.floor(Math.random() * data.length);
+    const fakeAnswers = new Set();
+    while (fakeAnswers.size < 3) {
+      const randomNumber = Math.floor(Math.random() * data.length);
+      if (randomNumber !== ind) {
+        fakeAnswers.add(data[randomNumber].name);
+      }
+    }
+    const allAnswers = [data[ind].name, ...fakeAnswers];
+    return {
+      ...state,
+      albumTracks: action.payload,
+      answers: allAnswers,
+      indexOfTrack: ind,
+    };
   }
   return state;
 };
