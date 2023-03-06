@@ -8,9 +8,7 @@ import { useArtistContext } from "../context/artist_context";
 
 const PlayerPage = () => {
   const { id } = useParams();
-  const {
-    artist: { id: artistID },
-  } = useArtistContext();
+  const { artistID } = useArtistContext();
   const {
     score,
     setScore,
@@ -39,7 +37,6 @@ const PlayerPage = () => {
       html5: true,
     });
     setSound(sound);
-    console.log(sound.play());
     return sound.play();
   };
 

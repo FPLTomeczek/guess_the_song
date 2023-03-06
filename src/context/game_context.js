@@ -56,7 +56,6 @@ export const GameProvider = ({ children }) => {
           },
         }
       );
-      console.log(data.items);
       dispatch({ type: SET_ALBUM_TRACKS, payload: data.items });
     } catch (error) {
       console.log(error);

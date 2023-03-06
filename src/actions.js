@@ -5,4 +5,4 @@ export const SET_ALBUM_TRACKS = "SET_ALBUM_TRACKS";
 export const SET_SCORE = "SET_SCORE";
 export const CHECK_GAME_FINISHED = "CHECK_GAME_FINISHED";
 export const RESET_GAME = "RESET_GAME";
-export const SET_ARTIST = "SET_ARTIST";
+export const SET_ARTIST_ID = "SET_ARTIST_ID";
