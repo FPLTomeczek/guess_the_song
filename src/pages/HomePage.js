@@ -7,7 +7,7 @@ import SearchArtistCard from "../components/SearchArtistCard";
 
 const HomePage = () => {
   const { isLoaded, token } = useAuthContext();
-  const { artistName, artists, setArtistName, fetchArtists } =
+  const { artistName, artists, setArtistName, fetchArtists, setArtist } =
     useArtistContext();
 
   useEffect(() => {
@@ -40,6 +40,7 @@ const HomePage = () => {
                   image={images[2]}
                   id={id}
                   key={id}
+                  onClick={() => setArtist(artist)}
                 />
               );
             })}

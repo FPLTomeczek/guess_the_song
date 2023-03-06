@@ -1,12 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useArtistContext } from "../context/artist_context";
+import { useLocation, useParams } from "react-router-dom";
 import { Howl } from "howler";
+import { useGameContext } from "../context/game_context";
+import { PREVIEW_TIME } from "../constants";
+import { Link } from "react-router-dom";
+import { useArtistContext } from "../context/artist_context";
 
 const PlayerPage = () => {
   const { id } = useParams();
-  const { albumTracks, fetchAlbumTracks, answers, indexOfTrack } =
-    useArtistContext();
+  const {
+    artist: { id: artistID },
+  } = useArtistContext();
+  const {
+    score,
+    setScore,
+    fetchAlbumTracks,
+    albumTracks,
+    answers,
+    indexOfTrack,
+    setNewRound,
+    round,
+    max_round,
+    checkGameFinished,
+    finished,
+    resetGame,
+  } = useGameContext();
+  const location = useLocation();
+  const { from } = location.state;
   const [sound, setSound] = useState([]);
 
   useEffect(() => {
@@ -30,16 +50,38 @@ const PlayerPage = () => {
   const checkAnswer = (answer) => {
     if (answer === albumTracks[indexOfTrack].name) {
       const time = Math.floor(sound.seek());
-      console.log(time);
-      return time;
+      setScore(PREVIEW_TIME - time);
     }
+    setNewRound(albumTracks);
+    soundStop();
+    checkGameFinished(round);
+    // set new track and answers
   };
+
+  if (finished) {
+    return (
+      <div>
+        <h4>Your score is {score}</h4>
+        <Link to="/">
+          <button onClick={resetGame}>Return to Main Menu</button>
+        </Link>
+        <Link to={`/artist/${artistID}`}>
+          <button onClick={resetGame}>Return to Artist Albums</button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div>
+      <img src={from[1].url} alt="album cover" />
+      <h4>
+        {round}/{max_round}
+      </h4>
+      <h3>{score}</h3>
       {albumTracks[indexOfTrack] && (
         <div>
-          <h4>{answers[0]}</h4>
+          <h4>{albumTracks[indexOfTrack].name}</h4>
           <button
             onClick={() => soundPlay(albumTracks[indexOfTrack].preview_url)}
           >
@@ -49,8 +91,12 @@ const PlayerPage = () => {
         </div>
       )}
       <div>
-        {answers.map((answer) => {
-          return <button onClick={() => checkAnswer(answer)}>{answer}</button>;
+        {answers.map((answer, index) => {
+          return (
+            <button onClick={() => checkAnswer(answer)} key={index}>
+              {answer}
+            </button>
+          );
         })}
       </div>
     </div>
