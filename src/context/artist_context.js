@@ -5,7 +5,7 @@ import {
   SET_ARTISTS,
   SET_ARTIST_NAME,
   SET_ARTIST_ALBUM,
-  SET_ALBUM_TRACKS,
+  SET_ARTIST,
 } from "../actions";
 import axios from "axios";
 import { useAuthContext } from "./auth_context";
@@ -17,9 +17,6 @@ const initialState = {
   artists: [],
   artist: {},
   artistAlbums: [],
-  albumTracks: [],
-  answers: [],
-  indexOfTrack: 0,
 };
 
 export const ArtistProvider = ({ children }) => {
@@ -28,6 +25,10 @@ export const ArtistProvider = ({ children }) => {
 
   const setArtistName = (e) => {
     dispatch({ type: SET_ARTIST_NAME, payload: e.target.value });
+  };
+
+  const setArtist = (artist) => {
+    dispatch({ type: SET_ARTIST, payload: artist });
   };
 
   const setArtists = (data) => {
@@ -49,26 +50,6 @@ export const ArtistProvider = ({ children }) => {
       );
       console.log(data.items);
       dispatch({ type: SET_ARTIST_ALBUM, payload: data.items });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchAlbumTracks = async (id) => {
-    try {
-      const { data } = await axios.get(
-        `https://api.spotify.com/v1/albums/${id}/tracks`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            limit: 50,
-          },
-        }
-      );
-      console.log(data.items);
-      dispatch({ type: SET_ALBUM_TRACKS, payload: data.items });
     } catch (error) {
       console.log(error);
     }
@@ -103,7 +84,7 @@ export const ArtistProvider = ({ children }) => {
         setArtists,
         fetchArtists,
         fetchArtistAlbums,
-        fetchAlbumTracks,
+        setArtist,
       }}
     >
       {children}

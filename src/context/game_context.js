@@ -1,27 +1,84 @@
-// import { createContext, useContext, useReducer } from "react";
-// import reducer from "../reducers/game_reducer";
-// import { SET_SCORE } from "../actions";
+import { createContext, useContext, useReducer } from "react";
+import reducer from "../reducers/game_reducer";
+import {
+  SET_SCORE,
+  SET_ALBUM_TRACKS,
+  CHECK_GAME_FINISHED,
+  RESET_GAME,
+} from "../actions";
+import { useAuthContext } from "./auth_context";
+import axios from "axios";
 
-// const GameContext = createContext();
+const GameContext = createContext();
 
-// const initialState = {
-//   score: 0,
-// };
+const initialState = {
+  score: 0,
+  round: 0,
+  max_round: 5,
+  max_score: 150,
+  idOfPlayedTracks: [],
+  albumTracks: [],
+  answers: [],
+  indexOfTrack: 0,
+  finished: false,
+};
 
-// export const GameProvider = ({ children }) => {
-//   const [state, dispatch] = useReducer(reducer, initialState);
+export const GameProvider = ({ children }) => {
+  const { token } = useAuthContext();
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-//   const setScore = (value) => {
-//     dispatch({ type: SET_SCORE, payload: value });
-//   };
+  const setScore = (value) => {
+    dispatch({ type: SET_SCORE, payload: value });
+  };
 
-//   return (
-//     <GameContext.Provider value={{ ...state, setScore }}>
-//       {children}
-//     </GameContext.Provider>
-//   );
-// };
+  const resetGame = () => {
+    dispatch({ type: RESET_GAME, payload: initialState });
+  };
 
-// export const useGameContext = () => {
-//   return useContext(GameContext);
-// };
+  const setNewRound = (data) => {
+    dispatch({ type: SET_ALBUM_TRACKS, payload: data });
+  };
+
+  const checkGameFinished = (round) => {
+    dispatch({ type: CHECK_GAME_FINISHED, payload: round });
+  };
+
+  const fetchAlbumTracks = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `https://api.spotify.com/v1/albums/${id}/tracks`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            limit: 50,
+          },
+        }
+      );
+      console.log(data.items);
+      dispatch({ type: SET_ALBUM_TRACKS, payload: data.items });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <GameContext.Provider
+      value={{
+        ...state,
+        setScore,
+        fetchAlbumTracks,
+        setNewRound,
+        checkGameFinished,
+        resetGame,
+      }}
+    >
+      {children}
+    </GameContext.Provider>
+  );
+};
+
+export const useGameContext = () => {
+  return useContext(GameContext);
+};
