@@ -4,18 +4,19 @@ import App from "./App";
 import { AuthProvider } from "./context/auth_context";
 import { ArtistProvider } from "./context/artist_context";
 import { GameProvider } from "./context/game_context";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <ArtistProvider>
-        <GameProvider>
-          <App />
-        </GameProvider>
-      </ArtistProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <AuthProvider>
+    <ArtistProvider>
+      <GameProvider>
+        <App />
+      </GameProvider>
+    </ArtistProvider>
+  </AuthProvider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

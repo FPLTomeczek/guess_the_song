@@ -5,7 +5,7 @@ import {
   SET_ARTISTS,
   SET_ARTIST_NAME,
   SET_ARTIST_ALBUM,
-  SET_ARTIST,
+  SET_ARTIST_ID,
 } from "../actions";
 import axios from "axios";
 import { useAuthContext } from "./auth_context";
@@ -15,7 +15,7 @@ const ArtistContext = createContext();
 const initialState = {
   artistName: "",
   artists: [],
-  artist: {},
+  artistID: 0,
   artistAlbums: [],
 };
 
@@ -27,8 +27,8 @@ export const ArtistProvider = ({ children }) => {
     dispatch({ type: SET_ARTIST_NAME, payload: e.target.value });
   };
 
-  const setArtist = (artist) => {
-    dispatch({ type: SET_ARTIST, payload: artist });
+  const setArtistID = (data) => {
+    dispatch({ type: SET_ARTIST_ID, payload: data });
   };
 
   const setArtists = (data) => {
@@ -48,7 +48,6 @@ export const ArtistProvider = ({ children }) => {
           },
         }
       );
-      console.log(data.items);
       dispatch({ type: SET_ARTIST_ALBUM, payload: data.items });
     } catch (error) {
       console.log(error);
@@ -68,7 +67,6 @@ export const ArtistProvider = ({ children }) => {
             limit: 5,
           },
         });
-        console.log(data);
         setArtists(data.artists.items);
       } catch (error) {
         console.log(error);
@@ -84,7 +82,7 @@ export const ArtistProvider = ({ children }) => {
         setArtists,
         fetchArtists,
         fetchArtistAlbums,
-        setArtist,
+        setArtistID,
       }}
     >
       {children}

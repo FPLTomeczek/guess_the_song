@@ -11,7 +11,8 @@ const gameReducer = (state, action) => {
     return { ...state, score: state.score + action.payload };
   }
   if (action.type === RESET_GAME) {
-    return { state: action.payload };
+    const initialState = action.payload;
+    return initialState;
   }
   if (action.type === CHECK_GAME_FINISHED) {
     const round = action.payload;
@@ -49,6 +50,7 @@ const gameReducer = (state, action) => {
       indexOfTrack: ind,
       idOfPlayedTracks: [...state.idOfPlayedTracks, ind],
       round: state.round + 1,
+      preview_url: data[ind].preview_url,
     };
   }
 };
