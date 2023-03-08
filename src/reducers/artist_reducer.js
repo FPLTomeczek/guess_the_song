@@ -7,15 +7,12 @@ import {
 
 const artistReducer = (state, action) => {
   if (action.type === SET_ARTIST_NAME) {
-    console.log("set-artist-name");
     return { ...state, artistName: action.payload };
   }
   if (action.type === SET_ARTISTS) {
     return { ...state, artists: action.payload };
   }
   if (action.type === SET_ARTIST_ID) {
-    console.log("set-artist-id");
-    console.log(action.payload);
     return { ...state, artistID: action.payload };
   }
   if (action.type === SET_ARTIST_ALBUM) {

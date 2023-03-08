@@ -50,6 +50,7 @@ const gameReducer = (state, action) => {
       indexOfTrack: ind,
       idOfPlayedTracks: [...state.idOfPlayedTracks, ind],
       round: state.round + 1,
+      preview_url: data[ind].preview_url,
     };
   }
 };

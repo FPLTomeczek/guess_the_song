@@ -8,15 +8,15 @@ import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <ArtistProvider>
-        <GameProvider>
-          <App />
-        </GameProvider>
-      </ArtistProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <AuthProvider>
+    <ArtistProvider>
+      <GameProvider>
+        <App />
+      </GameProvider>
+    </ArtistProvider>
+  </AuthProvider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
