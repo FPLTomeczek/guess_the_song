@@ -4,6 +4,8 @@ import { useAuthContext } from "../context/auth_context";
 import { useArtistContext } from "../context/artist_context";
 import SearchArtistCard from "../components/SearchArtistCard";
 import styled from "styled-components";
+// import { debounce } from "lodash";
+import { DebounceInput } from "react-debounce-input";
 
 const HomePage = () => {
   const { isLoaded, token } = useAuthContext();
@@ -22,14 +24,15 @@ const HomePage = () => {
     <section className="section-center">
       <Wrapper>
         <form className="search-artist-form">
-          <input
+          <DebounceInput
             type="text"
             id="artist"
             className="artist-input"
             value={artistName}
             placeholder="Enter artist name"
             onChange={(e) => setArtistName(e)}
-          ></input>
+            debounceTimeout={300}
+          ></DebounceInput>
         </form>
         <div>
           {artists &&

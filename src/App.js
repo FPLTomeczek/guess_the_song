@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import ArtistPage from "./pages/ArtistPage";
 import PlayerPage from "./pages/PlayerPage";
+import AlbumsPage from "./pages/AlbumsPage";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/" element={<HomePage />}></Route>
-        <Route path="/artist/:id" element={<ArtistPage />}></Route>
+        <Route path="/artist/:id" element={<AlbumsPage />}></Route>
         <Route path="/player/:id" element={<PlayerPage />}></Route>
       </Routes>
     </Router>

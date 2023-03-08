@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useCallback, useMemo, useReducer } from "react";
 import { useContext } from "react";
 import reducer from "../reducers/artist_reducer";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../actions";
 import axios from "axios";
 import { useAuthContext } from "./auth_context";
+import debounce from "lodash.debounce";
 
 const ArtistContext = createContext();
 
@@ -45,6 +46,7 @@ export const ArtistProvider = ({ children }) => {
           },
           params: {
             include_groups: "album",
+            limit: 50,
           },
         }
       );
