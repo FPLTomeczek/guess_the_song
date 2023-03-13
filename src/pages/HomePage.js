@@ -6,20 +6,24 @@ import SearchArtistCard from "../components/SearchArtistCard";
 import styled from "styled-components";
 // import { debounce } from "lodash";
 import { DebounceInput } from "react-debounce-input";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { isLoaded, token } = useAuthContext();
   const { artistName, artists, setArtistName, fetchArtists } =
     useArtistContext();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     fetchArtists();
   }, [artistName]);
 
-  if (!token && isLoaded) {
-    console.log("nav from home to login");
-    return <Navigate to="/login" />;
-  }
+  // useEffect(() => {
+  //   if (!token && isLoaded) {
+  //     navigate("/login");
+  //   }
+  // }, [token]);
+
   return (
     <section className="section-center">
       <Wrapper>

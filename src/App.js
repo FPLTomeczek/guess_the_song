@@ -7,7 +7,7 @@ import AlbumsPage from "./pages/AlbumsPage";
 
 function App() {
   return (
-    <Router>
+    <>
       <Navbar />
       <Routes>
         <Route path="/login" element={<LoginPage />}></Route>
@@ -15,7 +15,7 @@ function App() {
         <Route path="/artist/:id" element={<AlbumsPage />}></Route>
         <Route path="/player/:id" element={<PlayerPage />}></Route>
       </Routes>
-    </Router>
+    </>
   );
 }
 

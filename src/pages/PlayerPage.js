@@ -27,15 +27,12 @@ const PlayerPage = () => {
   } = useGameContext();
 
   const { soundPlay, soundStop, setTrack } = usePlayerContext();
-  const location = useLocation();
-  const { from } = location.state;
 
   const [seconds, setSeconds] = useState(30);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  let sound = {};
-
   useEffect(() => {
+    resetGame();
     setIsLoaded(false);
     fetchAlbumTracks(id);
     setIsLoaded(true);
@@ -112,11 +109,11 @@ const PlayerPage = () => {
       <main className="section-center">
         <div className="game-container">
           <div className="game-info">
-            <h3>
+            <span>
               Song {round}/{max_round}
-            </h3>
-            <img src={from[1].url} alt="album cover" />
-            <h3>Score :{score}</h3>
+            </span>
+            <img src="src" alt="album cover" />
+            <span>Score :{score}</span>
           </div>
           {albumTracks[indexOfTrack] ? (
             <div className="sound-btns">
@@ -169,7 +166,7 @@ const Wrapper = styled.div`
   .answer-buttons button {
     min-height: 4rem;
     border: none;
-    background-color: #193bb3;
+    background-color: #38502a;
     cursor: pointer;
     border-radius: 1rem;
     opacity: 0.8;

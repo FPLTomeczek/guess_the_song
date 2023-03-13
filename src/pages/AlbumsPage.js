@@ -52,6 +52,7 @@ const Wrapper = styled.div`
     column-gap: 2rem;
     row-gap: 2rem;
     grid-template-columns: 1fr 1fr 1fr;
+    cursor: pointer;
   }
   .btn-container {
     display: flex;

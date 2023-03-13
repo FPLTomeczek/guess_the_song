@@ -6,21 +6,25 @@ import logo from "../img/logo.png";
 import { BsPersonFillAdd, BsPersonFillDash } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
+import { usePlayerContext } from "../context/player_context";
 const Navbar = () => {
   const { token, setToken, username } = useAuthContext();
+  const { soundStop } = usePlayerContext();
 
   const logout = () => {
+    soundStop();
     setToken("");
     window.localStorage.removeItem("token");
-    return redirect("/login");
+    return <Navigate to="/login" />;
   };
 
   return (
     <Wrapper>
       <img src={logo} alt="logo" className="logo" />
       <div className="welcome-header">
-        {token && <h2>Welcome {username}!</h2>}
+        {token && <h2>Welcome, {username}!</h2>}
       </div>
       {!token ? (
         <Link
