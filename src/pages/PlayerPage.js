@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Howl } from "howler";
 import { useGameContext } from "../context/game_context";
 import { Link } from "react-router-dom";
 import { useArtistContext } from "../context/artist_context";
 import styled from "styled-components";
 import Loading from "../components/Loading";
 import { usePlayerContext } from "../context/player_context";
+import { PREVIEW_TIME } from "../constants";
 
 const PlayerPage = () => {
   const { id } = useParams();
@@ -24,9 +24,22 @@ const PlayerPage = () => {
     checkGameFinished,
     finished,
     resetGame,
+    max_score,
   } = useGameContext();
 
-  const { soundPlay, soundStop, setTrack } = usePlayerContext();
+  const location = useLocation();
+  const {
+    state: { from },
+  } = location;
+
+  const {
+    soundPlay,
+    soundStop,
+    setTrack,
+    playerSeconds,
+    setPlayerSeconds,
+    isPlaying,
+  } = usePlayerContext();
 
   const [seconds, setSeconds] = useState(30);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -40,31 +53,41 @@ const PlayerPage = () => {
 
   useEffect(() => {
     if (!finished) {
-      console.log("start");
       const timeout = setTimeout(() => {
         setNewRound(albumTracks);
         checkGameFinished(round);
-      }, 30000);
+      }, 300000);
       // set to 30000
-      console.log("finish");
       return () => clearTimeout(timeout);
     }
   }, [answers, finished]);
 
   useEffect(() => {
     if (!finished) {
-      console.log("start interval");
       setSeconds(30);
       const interval = setInterval(() => {
         setSeconds((sec) => {
-          console.log(sec);
           return sec - 1;
         });
       }, 1000);
-      console.log("finish interval");
+
       return () => clearInterval(interval);
     }
   }, [answers, finished]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      setPlayerSeconds(30);
+      const interval = setInterval(() => {
+        console.log(isPlaying);
+        setPlayerSeconds((sec) => {
+          return sec - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isPlaying]);
 
   const checkAnswer = (answer) => {
     if (answer === albumTracks[indexOfTrack].name) {
@@ -109,11 +132,31 @@ const PlayerPage = () => {
       <main className="section-center">
         <div className="game-container">
           <div className="game-info">
-            <span>
-              Song {round}/{max_round}
-            </span>
-            <img src="src" alt="album cover" />
-            <span>Score :{score}</span>
+            <div className="info-container">
+              <span>Song</span>
+              <span>
+                {round}/{max_round}
+              </span>
+            </div>
+            <img src={from[1].url} alt="album cover" />
+            <div className="info-container">
+              <span>Score</span>
+              <span>
+                {score}/{max_score}
+              </span>
+            </div>
+          </div>
+          <div>
+            <input
+              type="range"
+              max="30"
+              className="player-input"
+              disabled
+              value={PREVIEW_TIME - playerSeconds}
+            />
+            <div className={`timer ${seconds <= 5 && "timer-red"}`}>
+              TIME LEFT: {seconds}
+            </div>
           </div>
           {albumTracks[indexOfTrack] ? (
             <div className="sound-btns">
@@ -192,6 +235,41 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 5rem;
+    font-size: 1.5rem;
+  }
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.5;
+    width: 10vw;
+  }
+  .player-input {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 7px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  .player-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #000000;
+    height: 16px;
+    width: 16px;
+    border-radius: 8px;
+    background: #24b24a;
+    /* cursor: pointer; */
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  }
+  .timer {
+    display: flex;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+  }
+  .timer-red {
+    color: #f20d0d;
   }
 `;
 export default PlayerPage;

@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 import reducer from "../reducers/game_reducer";
 import {
   SET_SCORE,
@@ -26,6 +26,7 @@ const initialState = {
 export const GameProvider = ({ children }) => {
   const { token } = useAuthContext();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [seconds, setSeconds] = useState(30);
 
   const setScore = (value) => {
     dispatch({ type: SET_SCORE, payload: value });
@@ -71,6 +72,8 @@ export const GameProvider = ({ children }) => {
         setNewRound,
         checkGameFinished,
         resetGame,
+        seconds,
+        setSeconds,
       }}
     >
       {children}
