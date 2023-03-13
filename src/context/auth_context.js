@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -8,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -30,6 +32,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     fetchUserInfo();
+  }, [token]);
+
+  useEffect(() => {
+    if (!token && isLoaded) {
+      navigate("/login");
+    }
   }, [token]);
 
   const fetchUserInfo = async () => {

@@ -6,17 +6,20 @@ import { useGameContext } from "../context/game_context";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
+import { usePlayerContext } from "../context/player_context";
 
-const ArtistPage = () => {
+const AlbumsPage = () => {
   const { id } = useParams();
   const { fetchArtistAlbums, artistAlbums } = useArtistContext();
   const { resetGame } = useGameContext();
+  const { soundStop } = usePlayerContext();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(false);
     fetchArtistAlbums(id);
     setLoaded(true);
+    soundStop();
     resetGame();
   }, [id]);
 
@@ -49,6 +52,7 @@ const Wrapper = styled.div`
     column-gap: 2rem;
     row-gap: 2rem;
     grid-template-columns: 1fr 1fr 1fr;
+    cursor: pointer;
   }
   .btn-container {
     display: flex;
@@ -56,4 +60,4 @@ const Wrapper = styled.div`
   }
 `;
 
-export default ArtistPage;
+export default AlbumsPage;

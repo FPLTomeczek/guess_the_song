@@ -2,9 +2,30 @@
   --image-size: 128px;
 }
 
+html {
+  /* -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    172deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 20%,
+    rgba(8, 37, 140, 1) 32%,
+    rgba(4, 124, 197, 1) 62%,
+    rgba(2, 174, 230, 1) 88%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  background-attachment: fixed; */
+}
+
 body {
-  background: hsl(219, 100%, 12%);
+  /* background: hsl(219, 100%, 12%); */
+  background: #2e2e2e;
   color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
 a {

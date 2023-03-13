@@ -6,3 +6,5 @@ export const SET_SCORE = "SET_SCORE";
 export const CHECK_GAME_FINISHED = "CHECK_GAME_FINISHED";
 export const RESET_GAME = "RESET_GAME";
 export const SET_ARTIST_ID = "SET_ARTIST_ID";
+export const SOUND_PLAY = "SOUND_PLAY";
+export const SOUND_STOP = "SOUND_STOP";

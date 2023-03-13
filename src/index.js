@@ -4,18 +4,24 @@ import App from "./App";
 import { AuthProvider } from "./context/auth_context";
 import { ArtistProvider } from "./context/artist_context";
 import { GameProvider } from "./context/game_context";
+import { PlayerProvider } from "./context/player_context";
+import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <AuthProvider>
-    <ArtistProvider>
-      <GameProvider>
-        <App />
-      </GameProvider>
-    </ArtistProvider>
-  </AuthProvider>
+  <BrowserRouter>
+    <AuthProvider>
+      <ArtistProvider>
+        <GameProvider>
+          <PlayerProvider>
+            <App />
+          </PlayerProvider>
+        </GameProvider>
+      </ArtistProvider>
+    </AuthProvider>
+  </BrowserRouter>
   // </React.StrictMode>
 );
 
