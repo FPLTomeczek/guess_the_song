@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuthContext } from "../context/auth_context";
+import React, { useEffect } from "react";
 import { useArtistContext } from "../context/artist_context";
 import SearchArtistCard from "../components/SearchArtistCard";
 import styled from "styled-components";
-// import { debounce } from "lodash";
 import { DebounceInput } from "react-debounce-input";
-import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const { isLoaded, token } = useAuthContext();
   const { artistName, artists, setArtistName, fetchArtists } =
     useArtistContext();
-  // const navigate = useNavigate();
 
   useEffect(() => {
     fetchArtists();
   }, [artistName]);
-
-  // useEffect(() => {
-  //   if (!token && isLoaded) {
-  //     navigate("/login");
-  //   }
-  // }, [token]);
 
   return (
     <section className="section-center">
@@ -73,6 +61,8 @@ const Wrapper = styled.div`
     width: 500px;
     outline: none;
     font-size: 1.2rem;
+  }
+  @media (max-width: 500px) {
   }
 `;
 export default HomePage;

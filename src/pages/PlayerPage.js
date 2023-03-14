@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGameContext } from "../context/game_context";
 import { Link } from "react-router-dom";
 import { useArtistContext } from "../context/artist_context";
 import styled from "styled-components";
 import Loading from "../components/Loading";
 import { usePlayerContext } from "../context/player_context";
-import { PREVIEW_TIME } from "../constants";
 import { useProfileContext } from "../context/profile_context";
 import TopScores from "../components/TopScores";
+import Player from "../components/Player";
 
 const PlayerPage = () => {
   const { id } = useParams();
@@ -30,20 +30,13 @@ const PlayerPage = () => {
     images,
     name,
     setImagesAndName,
+    seconds,
   } = useGameContext();
 
   const { setTopScores } = useProfileContext();
 
-  const {
-    soundPlay,
-    soundStop,
-    setTrack,
-    playerSeconds,
-    setPlayerSeconds,
-    isPlaying,
-  } = usePlayerContext();
+  const { soundStop, setTrack } = usePlayerContext();
 
-  const [seconds, setSeconds] = useState(30);
   const [isLoaded, setIsLoaded] = useState(false);
   const [slideTop, setSlideTop] = useState(false);
   const [lastRoundSeconds, setLastRoundSeconds] = useState(false);
@@ -58,11 +51,12 @@ const PlayerPage = () => {
   }, [id]);
 
   useEffect(() => {
+    soundStop();
     if (!finished) {
       const timeout = setTimeout(() => {
         setNewRound(albumTracks);
         checkGameFinished(round);
-      }, 300000);
+      }, 30000);
       // set to 30000
       return () => clearTimeout(timeout);
     }
@@ -80,38 +74,11 @@ const PlayerPage = () => {
   }, [finished]);
 
   useEffect(() => {
-    if (!finished) {
-      setSeconds(30);
-      const interval = setInterval(() => {
-        setSeconds((sec) => {
-          return sec - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [answers, finished]);
-
-  useEffect(() => {
     console.log(round);
     if (round !== 1 && round !== 0) {
       setSlideTop(true);
     }
   }, [answers]);
-
-  useEffect(() => {
-    if (isPlaying) {
-      setPlayerSeconds(30);
-      const interval = setInterval(() => {
-        console.log(isPlaying);
-        setPlayerSeconds((sec) => {
-          return sec - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [isPlaying]);
 
   const checkAnswer = (answer) => {
     setSlideTop(false);
@@ -139,7 +106,9 @@ const PlayerPage = () => {
           <div className="finished-menu">
             {scoreAnimationVisible ? (
               <span
-                className={slideTop ? "score-slide" : "score-not-slide"}
+                className={
+                  slideTop ? "score-slide-finished" : "score-not-slide"
+                }
                 onAnimationEnd={() => setSlideTop(false)}
               >
                 +{lastRoundSeconds}
@@ -180,9 +149,7 @@ const PlayerPage = () => {
             {images ? (
               <img src={images[1].url} alt="album cover" />
             ) : (
-              <div className="lds-ring" style={{ margin: " 0 auto" }}>
-                <div></div>
-              </div>
+              <Loading />
             )}
             <div className="info-container">
               <span>Score</span>
@@ -199,31 +166,7 @@ const PlayerPage = () => {
               ) : null}
             </div>
           </div>
-          <div>
-            <input
-              type="range"
-              max="30"
-              className="player-input"
-              disabled
-              value={PREVIEW_TIME - playerSeconds}
-            />
-            <div className={`timer ${seconds <= 5 && "timer-red"}`}>
-              TIME LEFT: {seconds}
-            </div>
-          </div>
-          {albumTracks[indexOfTrack] ? (
-            <div className="sound-btns">
-              <button
-                className="btn"
-                onClick={() => soundPlay(albumTracks[indexOfTrack].preview_url)}
-              >
-                Play
-              </button>
-              <button className="btn" onClick={() => soundStop()}>
-                Stop
-              </button>
-            </div>
-          ) : null}
+          <Player />
           <div className="answer-buttons">
             {answers.map((answer, index) => {
               return (
@@ -288,9 +231,6 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
   }
-  .sound-btns {
-    display: flex;
-  }
   .game-info {
     display: flex;
     align-items: center;
@@ -305,32 +245,6 @@ const Wrapper = styled.div`
     width: 10vw;
     position: relative;
   }
-  .player-input {
-    -webkit-appearance: none;
-    width: 300px;
-    height: 7px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  .player-input::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 8px;
-    background: #24b24a;
-    /* cursor: pointer; */
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  }
-  .timer {
-    display: flex;
-    justify-content: center;
-    font-size: 1.8rem;
-    margin-top: 0.5rem;
-  }
-  .timer-red {
-    color: #f20d0d;
-  }
   .score-slide {
     position: absolute;
     animation: 4s slideintop none;
@@ -343,10 +257,12 @@ const Wrapper = styled.div`
   }
   .score-slide-finished {
     position: absolute;
-    opacity: 0;
-    animation: 2s slideintop none;
-  }
-  .topScores {
+    opacity: 1;
+    animation: 4s slideintop none;
+    z-index: 1;
+    color: green;
+    left: 300px;
+    bottom: 400px;
   }
 `;
 export default PlayerPage;
