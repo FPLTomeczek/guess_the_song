@@ -50,7 +50,6 @@ export const ArtistProvider = ({ children }) => {
           },
         }
       );
-      console.log(data);
       dispatch({ type: SET_ARTIST_ALBUM, payload: data.items });
     } catch (error) {
       console.log(error);

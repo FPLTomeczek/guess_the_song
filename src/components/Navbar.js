@@ -22,7 +22,9 @@ const Navbar = () => {
 
   return (
     <Wrapper>
-      <img src={logo} alt="logo" className="logo" />
+      <Link to="/">
+        <img src={logo} alt="logo" className="logo" />
+      </Link>
       <div className="welcome-header">
         {token && <h2>Welcome, {username}!</h2>}
       </div>

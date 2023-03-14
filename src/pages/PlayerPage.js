@@ -7,6 +7,8 @@ import styled from "styled-components";
 import Loading from "../components/Loading";
 import { usePlayerContext } from "../context/player_context";
 import { PREVIEW_TIME } from "../constants";
+import { useProfileContext } from "../context/profile_context";
+import TopScores from "../components/TopScores";
 
 const PlayerPage = () => {
   const { id } = useParams();
@@ -27,9 +29,10 @@ const PlayerPage = () => {
     max_score,
   } = useGameContext();
 
+  const { setTopScores, topScores } = useProfileContext();
   const location = useLocation();
   const {
-    state: { from },
+    state: { from, name },
   } = location;
 
   const {
@@ -43,6 +46,9 @@ const PlayerPage = () => {
 
   const [seconds, setSeconds] = useState(30);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [slideTop, setSlideTop] = useState(false);
+  const [lastRoundSeconds, setLastRoundSeconds] = useState(false);
+  const [scoreAnimationVisible, setScoreAnimationVisible] = useState(false);
 
   useEffect(() => {
     resetGame();
@@ -63,6 +69,12 @@ const PlayerPage = () => {
   }, [answers, finished]);
 
   useEffect(() => {
+    if (finished) {
+      setTopScores({ src: from[1].url, name, score, id: new Date().valueOf() });
+    }
+  }, [finished]);
+
+  useEffect(() => {
     if (!finished) {
       setSeconds(30);
       const interval = setInterval(() => {
@@ -74,6 +86,13 @@ const PlayerPage = () => {
       return () => clearInterval(interval);
     }
   }, [answers, finished]);
+
+  useEffect(() => {
+    console.log(round);
+    if (round !== 1 && round !== 0) {
+      setSlideTop(true);
+    }
+  }, [answers]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -90,13 +109,18 @@ const PlayerPage = () => {
   }, [isPlaying]);
 
   const checkAnswer = (answer) => {
+    setSlideTop(false);
     if (answer === albumTracks[indexOfTrack].name) {
       setScore(seconds);
+      setScoreAnimationVisible(true);
+    } else {
+      setScoreAnimationVisible(false);
     }
     setNewRound(albumTracks);
     setTrack(null);
     soundStop();
     checkGameFinished(round);
+    setLastRoundSeconds(seconds);
   };
 
   if (!isLoaded) {
@@ -106,9 +130,15 @@ const PlayerPage = () => {
   if (finished) {
     return (
       <Wrapper>
-        <section className="section-center">
+        <div className="section-center">
           <div className="finished-menu">
-            <h2>Your score is {score}</h2>
+            <span
+              className={slideTop ? `score-slide-finished` : "score-not-slide"}
+              onAnimationEnd={() => setSlideTop(false)}
+            >
+              30
+            </span>
+            <h2 style={{ position: "relative" }}>Your score is {score}</h2>
             <div className="finished-buttons">
               <Link to="/">
                 <button className="btn" onClick={resetGame}>
@@ -121,8 +151,9 @@ const PlayerPage = () => {
                 </button>
               </Link>
             </div>
+            <TopScores className="topScores" />
           </div>
-        </section>
+        </div>
       </Wrapper>
     );
   }
@@ -144,6 +175,14 @@ const PlayerPage = () => {
               <span>
                 {score}/{max_score}
               </span>
+              {scoreAnimationVisible ? (
+                <span
+                  className={slideTop ? `score-slide` : "score-not-slide"}
+                  onAnimationEnd={() => setSlideTop(false)}
+                >
+                  +{lastRoundSeconds}
+                </span>
+              ) : null}
             </div>
           </div>
           <div>
@@ -187,6 +226,14 @@ const PlayerPage = () => {
 };
 
 const Wrapper = styled.div`
+  @keyframes slideintop {
+    1% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-400px);
+    }
+  }
   .section-center {
     display: flex;
     justify-content: center;
@@ -222,7 +269,6 @@ const Wrapper = styled.div`
     opacity: 1;
   }
   .finished-menu {
-    height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -243,6 +289,7 @@ const Wrapper = styled.div`
     align-items: center;
     line-height: 1.5;
     width: 10vw;
+    position: relative;
   }
   .player-input {
     -webkit-appearance: none;
@@ -254,7 +301,6 @@ const Wrapper = styled.div`
   }
   .player-input::-webkit-slider-thumb {
     -webkit-appearance: none;
-    border: 1px solid #000000;
     height: 16px;
     width: 16px;
     border-radius: 8px;
@@ -270,6 +316,23 @@ const Wrapper = styled.div`
   }
   .timer-red {
     color: #f20d0d;
+  }
+  .score-slide {
+    position: absolute;
+    animation: 4s slideintop none;
+    opacity: 0;
+    color: green;
+  }
+  .score-not-slide {
+    position: absolute;
+    opacity: 0;
+  }
+  .score-slide-finished {
+    position: absolute;
+    opacity: 0;
+    animation: 2s slideintop none;
+  }
+  .topScores {
   }
 `;
 export default PlayerPage;

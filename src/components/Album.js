@@ -6,7 +6,7 @@ const Album = ({ id, images, name, total_tracks }) => {
   return (
     <Wrapper>
       <div className="singleAlbum" key={id}>
-        <Link to={`/player/${id}`} state={{ from: images }}>
+        <Link to={`/player/${id}`} state={{ from: images, name }}>
           <img src={images[1].url} alt="album cover" />
           <div className="desc">
             <h3>{name.length > 20 ? `${name.substring(0, 20)}...` : name}</h3>
