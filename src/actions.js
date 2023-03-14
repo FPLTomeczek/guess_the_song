@@ -9,3 +9,4 @@ export const SET_ARTIST_ID = "SET_ARTIST_ID";
 export const SOUND_PLAY = "SOUND_PLAY";
 export const SOUND_STOP = "SOUND_STOP";
 export const SET_TOP_SCORES = "SET_TOP_SCORES";
+export const SET_IMAGES_AND_NAME = "SET_IMAGES_AND_NAME";

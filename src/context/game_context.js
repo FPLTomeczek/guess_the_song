@@ -5,6 +5,7 @@ import {
   SET_ALBUM_TRACKS,
   CHECK_GAME_FINISHED,
   RESET_GAME,
+  SET_IMAGES_AND_NAME,
 } from "../actions";
 import { useAuthContext } from "./auth_context";
 import axios from "axios";
@@ -21,12 +22,18 @@ const initialState = {
   answers: [],
   indexOfTrack: 0,
   finished: false,
+  images: [],
+  albumName: "",
 };
 
 export const GameProvider = ({ children }) => {
   const { token } = useAuthContext();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [seconds, setSeconds] = useState(30);
+
+  const setImagesAndName = (images, name) => {
+    dispatch({ type: SET_IMAGES_AND_NAME, payload: { images, name } });
+  };
 
   const setScore = (value) => {
     dispatch({ type: SET_SCORE, payload: value });
@@ -74,6 +81,7 @@ export const GameProvider = ({ children }) => {
         resetGame,
         seconds,
         setSeconds,
+        setImagesAndName,
       }}
     >
       {children}

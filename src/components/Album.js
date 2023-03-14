@@ -1,12 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useGameContext } from "../context/game_context";
 
 const Album = ({ id, images, name, total_tracks }) => {
+  const { setImagesAndName } = useGameContext();
+
   return (
     <Wrapper>
       <div className="singleAlbum" key={id}>
-        <Link to={`/player/${id}`} state={{ from: images, name }}>
+        <Link
+          onClick={() => setImagesAndName(images, name)}
+          to={`/player/${id}`}
+        >
           <img src={images[1].url} alt="album cover" />
           <div className="desc">
             <h3>{name.length > 20 ? `${name.substring(0, 20)}...` : name}</h3>

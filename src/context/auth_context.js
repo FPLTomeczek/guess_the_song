@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (!token && isLoaded) {
+      console.log("logout");
       navigate("/login");
     }
   }, [token]);

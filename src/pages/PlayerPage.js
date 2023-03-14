@@ -27,13 +27,12 @@ const PlayerPage = () => {
     finished,
     resetGame,
     max_score,
+    images,
+    name,
+    setImagesAndName,
   } = useGameContext();
 
-  const { setTopScores, topScores } = useProfileContext();
-  const location = useLocation();
-  const {
-    state: { from, name },
-  } = location;
+  const { setTopScores } = useProfileContext();
 
   const {
     soundPlay,
@@ -54,6 +53,7 @@ const PlayerPage = () => {
     resetGame();
     setIsLoaded(false);
     fetchAlbumTracks(id);
+    setImagesAndName(images, name);
     setIsLoaded(true);
   }, [id]);
 
@@ -70,7 +70,12 @@ const PlayerPage = () => {
 
   useEffect(() => {
     if (finished) {
-      setTopScores({ src: from[1].url, name, score, id: new Date().valueOf() });
+      setTopScores({
+        src: images[1].url,
+        name,
+        score,
+        id: new Date().valueOf(),
+      });
     }
   }, [finished]);
 
@@ -132,12 +137,15 @@ const PlayerPage = () => {
       <Wrapper>
         <div className="section-center">
           <div className="finished-menu">
-            <span
-              className={slideTop ? `score-slide-finished` : "score-not-slide"}
-              onAnimationEnd={() => setSlideTop(false)}
-            >
-              30
-            </span>
+            {scoreAnimationVisible ? (
+              <span
+                className={slideTop ? "score-slide" : "score-not-slide"}
+                onAnimationEnd={() => setSlideTop(false)}
+              >
+                +{lastRoundSeconds}
+              </span>
+            ) : null}
+
             <h2 style={{ position: "relative" }}>Your score is {score}</h2>
             <div className="finished-buttons">
               <Link to="/">
@@ -169,7 +177,13 @@ const PlayerPage = () => {
                 {round}/{max_round}
               </span>
             </div>
-            <img src={from[1].url} alt="album cover" />
+            {images ? (
+              <img src={images[1].url} alt="album cover" />
+            ) : (
+              <div className="lds-ring" style={{ margin: " 0 auto" }}>
+                <div></div>
+              </div>
+            )}
             <div className="info-container">
               <span>Score</span>
               <span>

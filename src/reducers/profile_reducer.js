@@ -2,7 +2,7 @@ import { SET_TOP_SCORES } from "../actions";
 
 const profileReducer = (state, action) => {
   if (action.type === SET_TOP_SCORES) {
-    if (state.topScores.length < 3) {
+    if (state.topScores.length < 10) {
       return {
         ...state,
         topScores: [...state.topScores, action.payload],
