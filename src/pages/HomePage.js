@@ -1,16 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useArtistContext } from "../context/artist_context";
 import SearchArtistCard from "../components/SearchArtistCard";
 import styled from "styled-components";
 import { DebounceInput } from "react-debounce-input";
+import Error from "../components/Error";
+import Loading from "../components/Loading";
 
 const HomePage = () => {
   const { artistName, artists, setArtistName, fetchArtists } =
     useArtistContext();
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
+    setIsLoaded(false);
     fetchArtists();
+    setIsLoaded(true);
   }, [artistName]);
+
+  if (!isLoaded) {
+    return <Loading />;
+  }
 
   return (
     <section className="section-center">
@@ -27,7 +37,7 @@ const HomePage = () => {
           ></DebounceInput>
         </form>
         <div>
-          {artists &&
+          {artists.length > 0 ? (
             artists.map((artist) => {
               const { name, images, id } = artist;
               return (
@@ -38,7 +48,10 @@ const HomePage = () => {
                   key={id}
                 />
               );
-            })}
+            })
+          ) : (
+            <Error type={"Artists"} />
+          )}
         </div>
       </Wrapper>
     </section>

@@ -24,7 +24,7 @@ const Navbar = () => {
         <img src={logo} alt="logo" className="logo" />
       </Link>
       <div className="welcome-header">
-        {token && <h2>Welcome, {username}!</h2>}
+        {token ? <h2>Welcome, {username}!</h2> : null}
       </div>
       {!token ? (
         <Link

@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
         setUsername(data.display_name);
       } catch (error) {
         console.log(error);
+        localStorage.removeItem("token");
       }
     }
   };

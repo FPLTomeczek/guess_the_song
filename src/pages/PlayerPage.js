@@ -9,6 +9,7 @@ import { usePlayerContext } from "../context/player_context";
 import { useProfileContext } from "../context/profile_context";
 import TopScores from "../components/TopScores";
 import Player from "../components/Player";
+import GameInfo from "../components/GameInfo";
 
 const PlayerPage = () => {
   const { id } = useParams();
@@ -22,11 +23,9 @@ const PlayerPage = () => {
     indexOfTrack,
     setNewRound,
     round,
-    max_round,
     checkGameFinished,
     finished,
     resetGame,
-    max_score,
     images,
     name,
     setImagesAndName,
@@ -56,7 +55,7 @@ const PlayerPage = () => {
       const timeout = setTimeout(() => {
         setNewRound(albumTracks);
         checkGameFinished(round);
-      }, 30000);
+      }, 5000);
       // set to 30000
       return () => clearTimeout(timeout);
     }
@@ -74,7 +73,6 @@ const PlayerPage = () => {
   }, [finished]);
 
   useEffect(() => {
-    console.log(round);
     if (round !== 1 && round !== 0) {
       setSlideTop(true);
     }
@@ -139,33 +137,12 @@ const PlayerPage = () => {
     <Wrapper>
       <main className="section-center">
         <div className="game-container">
-          <div className="game-info">
-            <div className="info-container">
-              <span>Song</span>
-              <span>
-                {round}/{max_round}
-              </span>
-            </div>
-            {images ? (
-              <img src={images[1].url} alt="album cover" />
-            ) : (
-              <Loading />
-            )}
-            <div className="info-container">
-              <span>Score</span>
-              <span>
-                {score}/{max_score}
-              </span>
-              {scoreAnimationVisible ? (
-                <span
-                  className={slideTop ? `score-slide` : "score-not-slide"}
-                  onAnimationEnd={() => setSlideTop(false)}
-                >
-                  +{lastRoundSeconds}
-                </span>
-              ) : null}
-            </div>
-          </div>
+          <GameInfo
+            slideTop={slideTop}
+            setSlideTop={setSlideTop}
+            lastRoundSeconds={lastRoundSeconds}
+            scoreAnimationVisible={scoreAnimationVisible}
+          />
           <Player />
           <div className="answer-buttons">
             {answers.map((answer, index) => {
@@ -230,26 +207,6 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
-  .game-info {
-    display: flex;
-    align-items: center;
-    gap: 5rem;
-    font-size: 1.5rem;
-  }
-  .info-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.5;
-    width: 10vw;
-    position: relative;
-  }
-  .score-slide {
-    position: absolute;
-    animation: 4s slideintop none;
-    opacity: 0;
-    color: green;
   }
   .score-not-slide {
     position: absolute;
