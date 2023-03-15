@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { Howl } from "howler";
+import { useParams } from "react-router-dom";
 import { useGameContext } from "../context/game_context";
 import { Link } from "react-router-dom";
 import { useArtistContext } from "../context/artist_context";
 import styled from "styled-components";
 import Loading from "../components/Loading";
 import { usePlayerContext } from "../context/player_context";
+import { useProfileContext } from "../context/profile_context";
+import TopScores from "../components/TopScores";
+import Player from "../components/Player";
+import GameInfo from "../components/GameInfo";
 
 const PlayerPage = () => {
   const { id } = useParams();
@@ -20,60 +23,74 @@ const PlayerPage = () => {
     indexOfTrack,
     setNewRound,
     round,
-    max_round,
     checkGameFinished,
     finished,
     resetGame,
+    images,
+    name,
+    setImagesAndName,
+    seconds,
   } = useGameContext();
 
-  const { soundPlay, soundStop, setTrack } = usePlayerContext();
+  const { setTopScores } = useProfileContext();
 
-  const [seconds, setSeconds] = useState(30);
+  const { soundStop, setTrack } = usePlayerContext();
+
   const [isLoaded, setIsLoaded] = useState(false);
+  const [slideTop, setSlideTop] = useState(false);
+  const [lastRoundSeconds, setLastRoundSeconds] = useState(false);
+  const [scoreAnimationVisible, setScoreAnimationVisible] = useState(false);
 
   useEffect(() => {
     resetGame();
     setIsLoaded(false);
     fetchAlbumTracks(id);
+    setImagesAndName(images, name);
     setIsLoaded(true);
   }, [id]);
 
   useEffect(() => {
+    soundStop();
     if (!finished) {
-      console.log("start");
       const timeout = setTimeout(() => {
         setNewRound(albumTracks);
         checkGameFinished(round);
-      }, 30000);
+      }, 5000);
       // set to 30000
-      console.log("finish");
       return () => clearTimeout(timeout);
     }
   }, [answers, finished]);
 
   useEffect(() => {
-    if (!finished) {
-      console.log("start interval");
-      setSeconds(30);
-      const interval = setInterval(() => {
-        setSeconds((sec) => {
-          console.log(sec);
-          return sec - 1;
-        });
-      }, 1000);
-      console.log("finish interval");
-      return () => clearInterval(interval);
+    if (finished) {
+      setTopScores({
+        src: images[1].url,
+        name,
+        score,
+        id: new Date().valueOf(),
+      });
     }
-  }, [answers, finished]);
+  }, [finished]);
+
+  useEffect(() => {
+    if (round !== 1 && round !== 0) {
+      setSlideTop(true);
+    }
+  }, [answers]);
 
   const checkAnswer = (answer) => {
+    setSlideTop(false);
     if (answer === albumTracks[indexOfTrack].name) {
       setScore(seconds);
+      setScoreAnimationVisible(true);
+    } else {
+      setScoreAnimationVisible(false);
     }
     setNewRound(albumTracks);
     setTrack(null);
     soundStop();
     checkGameFinished(round);
+    setLastRoundSeconds(seconds);
   };
 
   if (!isLoaded) {
@@ -83,9 +100,20 @@ const PlayerPage = () => {
   if (finished) {
     return (
       <Wrapper>
-        <section className="section-center">
+        <div className="section-center">
           <div className="finished-menu">
-            <h2>Your score is {score}</h2>
+            {scoreAnimationVisible ? (
+              <span
+                className={
+                  slideTop ? "score-slide-finished" : "score-not-slide"
+                }
+                onAnimationEnd={() => setSlideTop(false)}
+              >
+                +{lastRoundSeconds}
+              </span>
+            ) : null}
+
+            <h2 style={{ position: "relative" }}>Your score is {score}</h2>
             <div className="finished-buttons">
               <Link to="/">
                 <button className="btn" onClick={resetGame}>
@@ -98,8 +126,9 @@ const PlayerPage = () => {
                 </button>
               </Link>
             </div>
+            <TopScores className="topScores" />
           </div>
-        </section>
+        </div>
       </Wrapper>
     );
   }
@@ -108,26 +137,13 @@ const PlayerPage = () => {
     <Wrapper>
       <main className="section-center">
         <div className="game-container">
-          <div className="game-info">
-            <span>
-              Song {round}/{max_round}
-            </span>
-            <img src="src" alt="album cover" />
-            <span>Score :{score}</span>
-          </div>
-          {albumTracks[indexOfTrack] ? (
-            <div className="sound-btns">
-              <button
-                className="btn"
-                onClick={() => soundPlay(albumTracks[indexOfTrack].preview_url)}
-              >
-                Play
-              </button>
-              <button className="btn" onClick={() => soundStop()}>
-                Stop
-              </button>
-            </div>
-          ) : null}
+          <GameInfo
+            slideTop={slideTop}
+            setSlideTop={setSlideTop}
+            lastRoundSeconds={lastRoundSeconds}
+            scoreAnimationVisible={scoreAnimationVisible}
+          />
+          <Player />
           <div className="answer-buttons">
             {answers.map((answer, index) => {
               return (
@@ -144,6 +160,14 @@ const PlayerPage = () => {
 };
 
 const Wrapper = styled.div`
+  @keyframes slideintop {
+    1% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-400px);
+    }
+  }
   .section-center {
     display: flex;
     justify-content: center;
@@ -179,19 +203,23 @@ const Wrapper = styled.div`
     opacity: 1;
   }
   .finished-menu {
-    height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
-  .sound-btns {
-    display: flex;
+  .score-not-slide {
+    position: absolute;
+    opacity: 0;
   }
-  .game-info {
-    display: flex;
-    align-items: center;
-    gap: 5rem;
+  .score-slide-finished {
+    position: absolute;
+    opacity: 1;
+    animation: 4s slideintop none;
+    z-index: 1;
+    color: green;
+    left: 300px;
+    bottom: 400px;
   }
 `;
 export default PlayerPage;

@@ -3,6 +3,7 @@ import {
   SET_ALBUM_TRACKS,
   CHECK_GAME_FINISHED,
   RESET_GAME,
+  SET_IMAGES_AND_NAME,
 } from "../actions";
 import shuffleArray from "../utils";
 
@@ -51,6 +52,14 @@ const gameReducer = (state, action) => {
       idOfPlayedTracks: [...state.idOfPlayedTracks, ind],
       round: state.round + 1,
       preview_url: data[ind].preview_url,
+    };
+  }
+  if (action.type === SET_IMAGES_AND_NAME) {
+    console.log(action.payload.images);
+    return {
+      ...state,
+      images: action.payload.images,
+      name: action.payload.name,
     };
   }
 };

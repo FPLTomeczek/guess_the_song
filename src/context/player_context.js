@@ -7,6 +7,7 @@ const PlayerContext = createContext();
 export const PlayerProvider = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [track, setTrack] = useState(null);
+  const [playerSeconds, setPlayerSeconds] = useState(30);
 
   let sound = {};
 
@@ -26,6 +27,7 @@ export const PlayerProvider = ({ children }) => {
 
   const soundStop = () => {
     setIsPlaying(false);
+    setPlayerSeconds(30);
     if (track) {
       return track.stop();
     }
@@ -33,7 +35,15 @@ export const PlayerProvider = ({ children }) => {
 
   return (
     <PlayerContext.Provider
-      value={{ isPlaying, track, soundPlay, soundStop, setTrack }}
+      value={{
+        isPlaying,
+        track,
+        soundPlay,
+        soundStop,
+        setTrack,
+        playerSeconds,
+        setPlayerSeconds,
+      }}
     >
       {children}
     </PlayerContext.Provider>

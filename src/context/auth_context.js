@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -14,7 +14,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
-    console.log("auth_use_effect");
 
     if (!token && hash) {
       token = hash
@@ -36,12 +35,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (!token && isLoaded) {
+      console.log("logout");
       navigate("/login");
     }
   }, [token]);
 
   const fetchUserInfo = async () => {
-    console.log(token);
     if (token) {
       try {
         const { data } = await axios.get("https://api.spotify.com/v1/me", {
@@ -52,6 +51,7 @@ export const AuthProvider = ({ children }) => {
         setUsername(data.display_name);
       } catch (error) {
         console.log(error);
+        localStorage.removeItem("token");
       }
     }
   };

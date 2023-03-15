@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useAuthContext } from "../context/auth_context";
-import { redirect } from "react-router-dom";
 import logo from "../img/logo.png";
 import { BsPersonFillAdd, BsPersonFillDash } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import { Navigate } from "react-router-dom";
-import axios from "axios";
 import { usePlayerContext } from "../context/player_context";
 const Navbar = () => {
   const { token, setToken, username } = useAuthContext();
@@ -22,9 +20,11 @@ const Navbar = () => {
 
   return (
     <Wrapper>
-      <img src={logo} alt="logo" className="logo" />
+      <Link to="/">
+        <img src={logo} alt="logo" className="logo" />
+      </Link>
       <div className="welcome-header">
-        {token && <h2>Welcome, {username}!</h2>}
+        {token ? <h2>Welcome, {username}!</h2> : null}
       </div>
       {!token ? (
         <Link

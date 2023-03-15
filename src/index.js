@@ -6,6 +6,7 @@ import { ArtistProvider } from "./context/artist_context";
 import { GameProvider } from "./context/game_context";
 import { PlayerProvider } from "./context/player_context";
 import { BrowserRouter } from "react-router-dom";
+import { ProfileProvider } from "./context/profile_context";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -13,13 +14,15 @@ root.render(
   // <React.StrictMode>
   <BrowserRouter>
     <AuthProvider>
-      <ArtistProvider>
-        <GameProvider>
-          <PlayerProvider>
-            <App />
-          </PlayerProvider>
-        </GameProvider>
-      </ArtistProvider>
+      <ProfileProvider>
+        <ArtistProvider>
+          <GameProvider>
+            <PlayerProvider>
+              <App />
+            </PlayerProvider>
+          </GameProvider>
+        </ArtistProvider>
+      </ProfileProvider>
     </AuthProvider>
   </BrowserRouter>
   // </React.StrictMode>

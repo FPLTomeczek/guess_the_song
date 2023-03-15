@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import { usePlayerContext } from "../context/player_context";
+import Error from "../components/Error";
 
 const AlbumsPage = () => {
   const { id } = useParams();
@@ -35,11 +36,14 @@ const AlbumsPage = () => {
             Return to Home Page
           </Link>
         </div>
-        <div className="albums">
-          {artistAlbums &&
+        <div className={`${artistAlbums.length > 0 ? "albums" : "error"}`}>
+          {artistAlbums.length > 0 ? (
             artistAlbums.map((album) => {
               return <Album key={album.id} {...album} />;
-            })}
+            })
+          ) : (
+            <Error type={"Albums"} />
+          )}
         </div>
       </main>
     </Wrapper>
@@ -53,6 +57,9 @@ const Wrapper = styled.div`
     row-gap: 2rem;
     grid-template-columns: 1fr 1fr 1fr;
     cursor: pointer;
+  }
+  .error {
+    text-align: center;
   }
   .btn-container {
     display: flex;
