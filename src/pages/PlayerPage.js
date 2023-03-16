@@ -55,7 +55,7 @@ const PlayerPage = () => {
       const timeout = setTimeout(() => {
         setNewRound(albumTracks);
         checkGameFinished(round);
-      }, 5000);
+      }, 3000000);
       // set to 30000
       return () => clearTimeout(timeout);
     }
@@ -202,6 +202,11 @@ const Wrapper = styled.div`
   .answer-buttons button:hover {
     opacity: 1;
   }
+  .finished-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .finished-menu {
     display: flex;
     flex-direction: column;
@@ -220,6 +225,22 @@ const Wrapper = styled.div`
     color: green;
     left: 300px;
     bottom: 400px;
+  }
+  @media (max-width: 1000px) {
+    .answer-buttons {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .answer-buttons {
+      width: 100%;
+    }
+    .answer-buttons button {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: auto;
+    }
   }
 `;
 export default PlayerPage;

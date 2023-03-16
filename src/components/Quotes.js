@@ -20,6 +20,7 @@ const Quotes = () => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   @keyframes fadein {
     100% {
       opacity: 1;
@@ -33,6 +34,7 @@ const Wrapper = styled.div`
   }
   .quote {
     display: flex;
+    position: absolute;
     align-items: center;
     gap: 1rem;
     opacity: 0;
@@ -45,10 +47,16 @@ const Wrapper = styled.div`
     font-family: "Cinzel Decorative", cursive;
   }
   .quote:nth-of-type(1) {
-    margin-left: 10%;
+    left: 15vw;
   }
   .quote:nth-of-type(2) {
-    margin-left: 30%;
+    top: 100px;
+    right: 15vw;
+  }
+  @media (max-width: 900px) {
+    .quote {
+      display: none;
+    }
   }
 `;
 

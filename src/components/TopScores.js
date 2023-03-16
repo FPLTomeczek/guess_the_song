@@ -67,6 +67,11 @@ const Wrapper = styled.div`
   .active-item {
     animation: 2s leaderboard-item-bg infinite;
   }
+  @media (max-width: 500px) {
+    .leaderboard-item {
+      width: 300px;
+    }
+  }
 `;
 
 export default TopScores;

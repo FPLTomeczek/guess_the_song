@@ -100,6 +100,11 @@ const Wrapper = styled.div`
   .sound-btns {
     display: flex;
   }
+  @media (max-width: 400px) {
+    .sound-btns {
+      flex-direction: column;
+    }
+  }
 `;
 
 export default Player;

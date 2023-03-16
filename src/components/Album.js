@@ -26,13 +26,14 @@ const Album = ({ id, images, name, total_tracks }) => {
 
 const Wrapper = styled.div`
   .singleAlbum {
-    display: grid;
+    display: flex;
     align-items: center;
     justify-content: center;
     background-color: #38502a;
     border-radius: 0.5rem;
     box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.2);
     opacity: 0.8;
+    padding: 0 1rem;
   }
   .singleAlbum:hover {
     opacity: 1;

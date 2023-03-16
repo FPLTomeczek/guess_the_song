@@ -36,7 +36,7 @@ const Wrapper = styled.div`
     background-color: #38502a;
     margin-top: 1rem;
     border-radius: 0.5rem;
-    min-width: 500px;
+    width: 500px;
     opacity: 0.85;
   }
   .searchResult:hover {
@@ -47,6 +47,12 @@ const Wrapper = styled.div`
   }
   img {
     border-radius: 50%;
+  }
+  @media (max-width: 800px) {
+    .searchResult {
+      box-sizing: border-box;
+      width: 100%;
+    }
   }
 `;
 export default SearchArtistCard;
