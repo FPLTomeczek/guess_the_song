@@ -29,14 +29,17 @@ const AlbumsPage = () => {
   }
 
   return (
-    <Wrapper>
-      <main className="section-center">
+    <main className="section-center">
+      <Wrapper>
         <div className="btn-container">
           <Link className="btn" to="/">
             Return to Home Page
           </Link>
         </div>
-        <div className={`${artistAlbums.length > 0 ? "albums" : "error"}`}>
+        <div
+          className={`${artistAlbums.length > 0 ? "albums" : "error"}`}
+          data-test="albums"
+        >
           {artistAlbums.length > 0 ? (
             artistAlbums.map((album) => {
               return <Album key={album.id} {...album} />;
@@ -45,18 +48,22 @@ const AlbumsPage = () => {
             <Error type={"Albums"} />
           )}
         </div>
-      </main>
-    </Wrapper>
+      </Wrapper>
+    </main>
   );
 };
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .albums {
     display: grid;
     column-gap: 2rem;
     row-gap: 2rem;
     grid-template-columns: 1fr 1fr 1fr;
     cursor: pointer;
+    max-width: 1060px;
   }
   .error {
     text-align: center;
@@ -64,6 +71,19 @@ const Wrapper = styled.div`
   .btn-container {
     display: flex;
     justify-content: center;
+  }
+  @media (max-width: 1100px) {
+    .albums {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 750px) {
+    .albums {
+      grid-template-columns: 1fr;
+    }
+    .btn {
+      text-align: center;
+    }
   }
 `;
 

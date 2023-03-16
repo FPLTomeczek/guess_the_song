@@ -1,5 +1,6 @@
 :root {
   --image-size: 128px;
+  --login-image-size: 50px;
 }
 
 html {
@@ -52,7 +53,6 @@ section {
   color: #fff;
   text-transform: uppercase;
   font-weight: 800;
-  /* transition: all 0.2s ease-in-out; */
   cursor: pointer;
 }
 

@@ -25,33 +25,37 @@ const HomePage = () => {
   return (
     <section className="section-center">
       <Wrapper>
-        <form className="search-artist-form">
-          <DebounceInput
-            type="text"
-            id="artist"
-            className="artist-input"
-            value={artistName}
-            placeholder="Enter artist name"
-            onChange={(e) => setArtistName(e)}
-            debounceTimeout={300}
-          ></DebounceInput>
-        </form>
-        <div>
-          {artists.length > 0 ? (
-            artists.map((artist) => {
-              const { name, images, id } = artist;
-              return (
-                <SearchArtistCard
-                  name={name}
-                  image={images[2]}
-                  id={id}
-                  key={id}
-                />
-              );
-            })
-          ) : (
-            <Error type={"Artists"} />
-          )}
+        <div className="input-and-results">
+          <form className="search-artist-form">
+            <DebounceInput
+              type="text"
+              id="artist"
+              className="artist-input"
+              value={artistName}
+              placeholder="Enter artist name"
+              onChange={(e) => setArtistName(e)}
+              debounceTimeout={300}
+              data-test="artist-input"
+            ></DebounceInput>
+          </form>
+          <div>
+            {artists.length > 0 ? (
+              artists.map((artist, index) => {
+                const { name, images, id } = artist;
+                return (
+                  <SearchArtistCard
+                    name={name}
+                    image={images[2]}
+                    id={id}
+                    key={id}
+                    index={index}
+                  />
+                );
+              })
+            ) : artistName && isLoaded ? (
+              <Error type="artist" />
+            ) : null}
+          </div>
         </div>
       </Wrapper>
     </section>
@@ -59,9 +63,11 @@ const HomePage = () => {
 };
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  .input-and-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .artist-input {
     border: none;
     -webkit-appearance: none;
@@ -75,7 +81,10 @@ const Wrapper = styled.div`
     outline: none;
     font-size: 1.2rem;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 800px) {
+    .artist-input {
+      width: fit-content;
+    }
   }
 `;
 export default HomePage;

@@ -55,7 +55,7 @@ const PlayerPage = () => {
       const timeout = setTimeout(() => {
         setNewRound(albumTracks);
         checkGameFinished(round);
-      }, 5000);
+      }, 30000);
       // set to 30000
       return () => clearTimeout(timeout);
     }
@@ -116,12 +116,20 @@ const PlayerPage = () => {
             <h2 style={{ position: "relative" }}>Your score is {score}</h2>
             <div className="finished-buttons">
               <Link to="/">
-                <button className="btn" onClick={resetGame}>
+                <button
+                  className="btn"
+                  onClick={resetGame}
+                  data-test="return-to-main-menu"
+                >
                   Return to Main Menu
                 </button>
               </Link>
               <Link to={`/artist/${artistID}`}>
-                <button className="btn" onClick={resetGame}>
+                <button
+                  className="btn"
+                  onClick={resetGame}
+                  data-test="return-to-artist-albums"
+                >
                   Return to Artist Albums
                 </button>
               </Link>
@@ -147,7 +155,11 @@ const PlayerPage = () => {
           <div className="answer-buttons">
             {answers.map((answer, index) => {
               return (
-                <button onClick={() => checkAnswer(answer)} key={index}>
+                <button
+                  onClick={() => checkAnswer(answer)}
+                  key={index}
+                  data-test={`answer-${index}`}
+                >
                   {answer}
                 </button>
               );
@@ -202,6 +214,11 @@ const Wrapper = styled.div`
   .answer-buttons button:hover {
     opacity: 1;
   }
+  .finished-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
   .finished-menu {
     display: flex;
     flex-direction: column;
@@ -220,6 +237,25 @@ const Wrapper = styled.div`
     color: green;
     left: 300px;
     bottom: 400px;
+  }
+  @media (max-width: 1000px) {
+    .answer-buttons {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .answer-buttons {
+      width: 100%;
+    }
+    .answer-buttons button {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: auto;
+    }
+    .finished-buttons {
+      flex-direction: column;
+    }
   }
 `;
 export default PlayerPage;

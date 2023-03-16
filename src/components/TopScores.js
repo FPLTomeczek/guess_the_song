@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useProfileContext } from "../context/profile_context";
 import styled from "styled-components";
 
@@ -66,6 +66,11 @@ const Wrapper = styled.div`
   }
   .active-item {
     animation: 2s leaderboard-item-bg infinite;
+  }
+  @media (max-width: 500px) {
+    .leaderboard-item {
+      width: 300px;
+    }
   }
 `;
 
