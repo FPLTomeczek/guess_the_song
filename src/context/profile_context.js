@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer } from "react";
 import reducer from "../reducers/profile_reducer";
 import { SET_TOP_SCORES } from "../actions";
 

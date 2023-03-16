@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useArtistContext } from "../context/artist_context";
 import questionMark from "../img/question-mark.png";
 
-const SearchArtistCard = ({ name, image, id }) => {
+const SearchArtistCard = ({ name, image, id, index }) => {
   const { setArtistID } = useArtistContext();
 
   const handleClick = () => {
@@ -14,7 +14,11 @@ const SearchArtistCard = ({ name, image, id }) => {
   return (
     <Wrapper>
       <Link className="artistCard" to={`/artist/${id}`}>
-        <div onClick={handleClick} className="searchResult">
+        <div
+          onClick={handleClick}
+          className="searchResult"
+          data-test={`artist-card-${index}`}
+        >
           <img
             src={image ? image.url : questionMark}
             style={{ height: "80px", width: "80px" }}

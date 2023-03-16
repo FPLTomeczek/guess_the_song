@@ -33,7 +33,7 @@ const Navbar = () => {
             className="link"
           >
             <IconContext.Provider value={{ size: "50px" }}>
-              <BsPersonFillAdd />
+              <BsPersonFillAdd data-test="login" />
             </IconContext.Provider>
           </Link>
         ) : (

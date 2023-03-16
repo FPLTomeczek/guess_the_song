@@ -35,22 +35,26 @@ const HomePage = () => {
               placeholder="Enter artist name"
               onChange={(e) => setArtistName(e)}
               debounceTimeout={300}
+              data-test="artist-input"
             ></DebounceInput>
           </form>
           <div>
-            {artists.length > 0
-              ? artists.map((artist) => {
-                  const { name, images, id } = artist;
-                  return (
-                    <SearchArtistCard
-                      name={name}
-                      image={images[2]}
-                      id={id}
-                      key={id}
-                    />
-                  );
-                })
-              : artistName && <Error type={"Artists"} />}
+            {artists.length > 0 ? (
+              artists.map((artist, index) => {
+                const { name, images, id } = artist;
+                return (
+                  <SearchArtistCard
+                    name={name}
+                    image={images[2]}
+                    id={id}
+                    key={id}
+                    index={index}
+                  />
+                );
+              })
+            ) : artistName && isLoaded ? (
+              <Error type="artist" />
+            ) : null}
           </div>
         </div>
       </Wrapper>

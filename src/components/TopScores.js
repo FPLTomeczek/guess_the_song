@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useProfileContext } from "../context/profile_context";
 import styled from "styled-components";
 

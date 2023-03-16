@@ -56,10 +56,15 @@ const Player = () => {
           <button
             className="btn"
             onClick={() => soundPlay(albumTracks[indexOfTrack].preview_url)}
+            data-test="play-btn"
           >
             Play
           </button>
-          <button className="btn" onClick={() => soundStop()}>
+          <button
+            className="btn"
+            onClick={() => soundStop()}
+            data-test="stop-btn"
+          >
             Stop
           </button>
         </div>

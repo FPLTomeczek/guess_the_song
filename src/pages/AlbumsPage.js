@@ -36,7 +36,10 @@ const AlbumsPage = () => {
             Return to Home Page
           </Link>
         </div>
-        <div className={`${artistAlbums.length > 0 ? "albums" : "error"}`}>
+        <div
+          className={`${artistAlbums.length > 0 ? "albums" : "error"}`}
+          data-test="albums"
+        >
           {artistAlbums.length > 0 ? (
             artistAlbums.map((album) => {
               return <Album key={album.id} {...album} />;

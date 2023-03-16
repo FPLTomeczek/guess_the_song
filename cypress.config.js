@@ -8,6 +8,11 @@ module.exports = defineConfig({
     },
   },
 
+  env: {
+    login: "tomaszs18m@gmail.com",
+    pass: "cypresstestpass2000",
+  },
+
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here

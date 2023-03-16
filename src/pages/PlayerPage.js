@@ -55,7 +55,7 @@ const PlayerPage = () => {
       const timeout = setTimeout(() => {
         setNewRound(albumTracks);
         checkGameFinished(round);
-      }, 3000000);
+      }, 30000);
       // set to 30000
       return () => clearTimeout(timeout);
     }
@@ -116,12 +116,20 @@ const PlayerPage = () => {
             <h2 style={{ position: "relative" }}>Your score is {score}</h2>
             <div className="finished-buttons">
               <Link to="/">
-                <button className="btn" onClick={resetGame}>
+                <button
+                  className="btn"
+                  onClick={resetGame}
+                  data-test="return-to-main-menu"
+                >
                   Return to Main Menu
                 </button>
               </Link>
               <Link to={`/artist/${artistID}`}>
-                <button className="btn" onClick={resetGame}>
+                <button
+                  className="btn"
+                  onClick={resetGame}
+                  data-test="return-to-artist-albums"
+                >
                   Return to Artist Albums
                 </button>
               </Link>
@@ -147,7 +155,11 @@ const PlayerPage = () => {
           <div className="answer-buttons">
             {answers.map((answer, index) => {
               return (
-                <button onClick={() => checkAnswer(answer)} key={index}>
+                <button
+                  onClick={() => checkAnswer(answer)}
+                  key={index}
+                  data-test={`answer-${index}`}
+                >
                   {answer}
                 </button>
               );
@@ -204,7 +216,7 @@ const Wrapper = styled.div`
   }
   .finished-buttons {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
   }
   .finished-menu {
@@ -240,6 +252,9 @@ const Wrapper = styled.div`
       box-sizing: border-box;
       width: 100%;
       min-width: auto;
+    }
+    .finished-buttons {
+      flex-direction: column;
     }
   }
 `;
