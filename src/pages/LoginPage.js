@@ -7,14 +7,6 @@ const LoginPage = () => {
       <Wrapper>
         <h2>Guess the song as fast as you can!</h2>
         <p>
-          {/* Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-          amet ea quam cumque ducimus maiores, sed, repudiandae, neque nam a
-          accusantium eos! Corrupti culpa consequatur necessitatibus, nihil
-          soluta voluptates qui accusamus fugiat totam beatae rem dolore animi
-          eos sint, non quaerat aliquid id ad voluptate quasi. Odio, consequatur
-          nisi facilis nihil amet doloremque, impedit exercitationem excepturi
-          nulla molestiae perferendis voluptates accusantium ab architecto
-  incidunt, facere dolor nesciunt.*/}
           SonGuessr is a game, where the user has to guess the song played from
           the album, which was obtained from Spotify API. For correct answers,
           the user gets points to his total score, BUT you have to be quick! The
