@@ -35,6 +35,7 @@ const Wrapper = styled.div`
   }
   p {
     font-size: 1.1rem;
+    line-height: 1.7rem;
   }
 
   p:nth-of-type(1) {
