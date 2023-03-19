@@ -55,7 +55,6 @@ const gameReducer = (state, action) => {
     };
   }
   if (action.type === SET_IMAGES_AND_NAME) {
-    console.log(action.payload.images);
     return {
       ...state,
       images: action.payload.images,

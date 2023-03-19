@@ -14,7 +14,6 @@ const Player = () => {
     if (isPlaying) {
       setPlayerSeconds(30);
       const interval = setInterval(() => {
-        console.log(isPlaying);
         setPlayerSeconds((sec) => {
           return sec - 1;
         });

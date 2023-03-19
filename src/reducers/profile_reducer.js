@@ -10,10 +10,7 @@ const profileReducer = (state, action) => {
       };
     } else {
       const newArray = state.topScores.sort((a, b) => b.score - a.score);
-      console.log(newArray.at(-1).score);
-      console.log(action.payload.score);
       if (action.payload.score > newArray.at(-1).score) {
-        console.log(newArray);
         newArray.pop();
         return {
           ...state,
