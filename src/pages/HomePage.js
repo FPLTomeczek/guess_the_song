@@ -12,6 +12,8 @@ const HomePage = () => {
 
   const [isLoaded, setIsLoaded] = useState(false);
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     setIsLoaded(false);
     fetchArtists();

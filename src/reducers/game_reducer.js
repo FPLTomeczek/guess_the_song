@@ -5,7 +5,7 @@ import {
   RESET_GAME,
   SET_IMAGES_AND_NAME,
 } from "../actions";
-import shuffleArray from "../utils";
+import { shuffleArray } from "../utils";
 
 const gameReducer = (state, action) => {
   if (action.type === SET_SCORE) {

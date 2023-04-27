@@ -1,4 +1,6 @@
-export default function shuffleArray(array) {
+import axios from "axios";
+
+function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
     let temp = array[i];
@@ -7,3 +9,11 @@ export default function shuffleArray(array) {
   }
   return array;
 }
+
+const customAxios = () => {
+  return axios.create({
+    baseURL: "http://localhost:5000/api/v1",
+  });
+};
+
+export { customAxios, shuffleArray };
