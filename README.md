@@ -6,6 +6,9 @@ Whole project is based on Spotify Web API
 # DEMO
 
 Website DEMO is hosted on [https://songuessr.netlify.app](https://songuessr.netlify.app)
+Dummy account for demo use:
+e-mail: dummyacc53215@gmail.com
+password: dummyspotifypassword4523
 
 ### Selecting Game
 
