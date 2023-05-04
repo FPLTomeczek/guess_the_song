@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { customAxios } from "../utils";
 
 const AuthContext = createContext();
 
@@ -48,11 +49,22 @@ export const AuthProvider = ({ children }) => {
           },
         });
         setUsername(data.display_name);
+        postUser(data.id);
       } catch (error) {
         console.log(error);
         localStorage.removeItem("token");
       }
     }
+  };
+
+  const postUser = async (id) => {
+    console.log(customAxios);
+    const { data: response } = await axios
+      .post("http://localhost:5000/api/v1/auth/login", {
+        spotify_id: id,
+      })
+      .catch((err) => console.log(err));
+    console.log(response);
   };
 
   return (
